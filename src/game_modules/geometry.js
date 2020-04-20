@@ -2,9 +2,9 @@ import * as THREE from "three";
 
 /**
  *
- * @param {width} w
- * @param {height} h
- * @param {depth} d
+ * @param {number} w
+ * @param {number} h
+ * @param {number} d
  */
 function getBoxMesh(w, h, d) {
 	const material = new THREE.MeshPhongMaterial({

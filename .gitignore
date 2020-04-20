@@ -106,3 +106,4 @@ dist
 .idea
 
 static/main.js
+static/game.js

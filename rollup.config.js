@@ -16,21 +16,5 @@ export default [
         } ),
         commonjs ()
     ]
-    },
-    {
-        input: 'src/game.js',
-        output: {
-            file: 'static/game.js',
-            format: 'iife',
-            name: 'bundle',
-        },
-        inlineDynamicImports: true,
-        plugins: [
-            resolve ( {
-                main: true,
-                browser: true
-            } ),
-            commonjs ()
-        ]
     }
 ]

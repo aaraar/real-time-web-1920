@@ -24,17 +24,29 @@ app.ws("/join", (ws, req) => {
 	ws.on("message", function (msg) {
 		const message = JSON.parse(msg);
 		if (message.type === "MOVEMENT") {
+			ws.position = message.player.position;
 			wsClients.forEach((wsClient) => {
 				if (wsClient.uuid !== ws.uuid) {
-					message.user = wsClient.uuid;
+					message.user = ws.uuid;
 					wsClient.send(JSON.stringify(message));
 				}
 			});
 		} else if (message.type === "LOGIN") {
 			ws.uuid = userCounter;
 			message.user = ws.uuid;
+			ws.position = message.player.position;
 			wsClients.push(ws);
 			wsClients.forEach((wsClient) => {
+				if (wsClient.uuid === ws.uuid) {
+					message.own = true;
+					message.players = wsClients.map(wsClient => {
+						if (wsClient.uuid !== ws.uuid){
+						 return {user: wsClient.uuid, position: wsClient.position}
+						} else {
+							return {me: true}
+						}
+					})
+				}
 				wsClient.send(JSON.stringify(message));
 			});
 			// } else if (message.type === "DRAW") {
@@ -60,8 +72,7 @@ app.ws("/join", (ws, req) => {
 				wsClient.send(
 					JSON.stringify({
 						type: "LOGOUT",
-						user: ws.user,
-						uuid: ws.uuid,
+						user: ws.uuid,
 					})
 				);
 			}
