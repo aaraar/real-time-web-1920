@@ -26,11 +26,13 @@
 - [ ] A functional game-mode
 
 ## Description 📝
-
-A this point it's a tech demo of using websockets in combination with webGL to create a multiplayer 3d game in the browser
+To experiment with real-time networking I wanted to create a multiplayer 3D game in the browser from scratch.
+I do use the threeJS library to abstract the low-level webGL API.
+The idea eventually is that users can create a room for which they will receive a room-key (Like Kahoot)
+This room key will be saved and up to X amount of players can connect to the room.
+All scores and some metadata will be saved on the database and session to persist the users.
 
 ## Installing 🔍
-
 To install this application follow these steps:
 
 - `git clone https://github.com/aaraar/real-time-web-1920`

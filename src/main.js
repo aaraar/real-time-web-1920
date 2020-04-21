@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import TWEEN from "@tweenjs/tween.js";
 import * as dat from "dat.gui";
 import geometry from "./game_modules/geometry";
 import Core from "./game_modules/core";
@@ -75,7 +76,15 @@ function init(connection) {
 		const message = JSON.parse(e.data);
 		if (message.type === "MOVEMENT") {
 			const movedPlayer = scene.getObjectByName(`player${message.user}`);
-			movedPlayer.position.set(message.player.position.x, message.player.position.y, message.player.position.z);
+			const position = movedPlayer.position;
+			const tween = new TWEEN.Tween(position) // Create a new tween that modifies 'coords'.
+				.to(message.player.position, 1000/60) // Move to in 1 frame assuming 60fps
+				.easing(TWEEN.Easing.Quadratic.InOut) // Use an easing function to make the animation smooth.
+				.onUpdate(() => { // Called after tween.js updates 'position'
+					movedPlayer.position.set(position.x, position.y, position.z);
+				})
+				.start(); // Start the tween immediately.
+			// movedPlayer.position.set(message.player.position.x, message.player.position.y, message.player.position.z);
 			// movedPlayer.rotation.set(message.player.rotation.x, message.player.rotation.y, message.player.rotation.z);
 			// movedPlayer.object.position = message.mesh.object.position;
 		} else if (message.type === "LOGIN") {
@@ -103,6 +112,7 @@ function init(connection) {
 
 function update(core, scene, events, player, connection) {
 	connection.echoPosition(core.camera);
+	TWEEN.update();
 	requestAnimationFrame(() => {
 		update(core, scene, events, player, connection);
 	});
