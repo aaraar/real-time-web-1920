@@ -42,7 +42,6 @@ app.use(session(sess))
 mongodClient.connect().then(err => {
     const rooms = {};
     const users = mongodClient.db("rtw1920").collection("users");
-    let wsClients = [];
 
     app.set("view engine", "pug");
     app.use(bodyParser.urlencoded({extended: true}));
@@ -65,25 +64,41 @@ mongodClient.connect().then(err => {
                     rooms[req.params.id] = [];
                 }
                 ws.uuid = userCounter;
+                ws.name = message.player.user;
                 ws.roomId = req.params.id
                 req.session.gameId = req.params.id
                 message.user = ws.uuid;
                 ws.position = message.player.position;
                 rooms[req.params.id].push(ws);
-                rooms[req.params.id].forEach((wsClient) => {
-                    if (wsClient.uuid === ws.uuid) {
+                rooms[req.params.id].forEach((roomClient) => {
+                    if (roomClient.uuid === ws.uuid) {
                         message.own = true;
                         message.players = rooms[req.params.id].map(wsClient => {
                             if (wsClient.uuid !== ws.uuid) {
-                                return {user: wsClient.uuid, position: wsClient.position}
+                                return {
+                                    name: wsClient.name,
+                                    user: wsClient.uuid,
+                                    position: wsClient.position
+                                }
                             } else {
-                                return {me: true}
+                                return {
+                                    me: true
+                                }
                             }
                         })
                     }
-                    wsClient.send(JSON.stringify(message));
+                    roomClient.send(JSON.stringify(message));
                 });
-            } else {
+            } else if (message.type === 'MESSAGE') {
+                msgCounter++;
+                rooms[req.params.id].forEach((wsClient) => {
+                    message.source = ws.uuid === wsClient? 'me' : 'other';
+                    message.user = ws.name;
+                    message.id = msgCounter;
+                  wsClient.send(JSON.stringify(message));
+                })
+            }
+            else {
                 ws.send(
                     JSON.stringify({
                         type: "PINGPONG",
@@ -149,6 +164,7 @@ mongodClient.connect().then(err => {
         }
         res.render("game", {
             gameId,
+            name: playerName,
             title: "Realtime Web",
             pageTitle: "Game",
         });

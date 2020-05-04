@@ -14,3 +14,60 @@ canvas {
 	z-index: 100;
 	display: block;
 }
+
+.gameInfo, .playerInfo, .chat {
+	padding: 0 1em;
+	border-radius: 5px;
+	display: block;
+	position: absolute;
+	background-color: rgba(125, 50, 50, 0.7);
+	color: white;
+}
+
+.playerInfo {
+	bottom: 0;
+	right: 0;
+}
+
+.chat {
+	flex-direction: column;
+	display: flex;
+	bottom: 0;
+	left: 0;
+	height: 20vh;
+	width: 20vw
+}
+
+.chat form {
+	margin: 5px 0;
+}
+
+#messages {
+	flex: 1 0;
+	flex-direction: column;
+	display: flex;
+	overflow-y: scroll;
+	word-break: break-word;
+	padding: initial;
+}
+
+#messages li {
+	list-style-type: none;
+	display: flex;
+	max-height: 2ch;
+	align-items: baseline;
+}
+
+#messages li em {
+	height: 100%;
+	width: max-content;
+	margin-right: 1ch;
+	align-items: center;
+}
+
+#messages li img {
+	object-fit: contain;
+	height: 100%;
+	margin-right: 0.5ch;
+	border-radius: 100%;
+}

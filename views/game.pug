@@ -7,6 +7,18 @@ html(lang="en")
         title #{ title }
         link(rel="stylesheet", href="/game.css")
     body
-        p#gameId=gameId
+        div.gameInfo
+            p Room:
+            p#gameId=gameId
+            input#playerName(type="hidden" value=name)
+        div.playerInfo
+            p Players:
+            ul
+                li #{name} (me)
+        div.chat
+            ul#messages
+            form(action="")
+                input#m(autocomplete="off" type="text")
+                button#send Send
         div#webgl
         script(src='/main.js')

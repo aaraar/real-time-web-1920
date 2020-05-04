@@ -7,10 +7,10 @@ import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js";
 
-export default function Core(scene, player) {
+export default function Core(scene, player, gui) {
 	const loadingScreen = {
 		scene: new THREE.Scene(),
-		camera: new THREE.PerspectiveCamera(90, 1280 / 720, 0.1, 100),
+		camera: new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 100),
 		box: new THREE.Mesh(
 			new THREE.BoxGeometry(0.5, 0.5, 0.5),
 			new THREE.MeshBasicMaterial({ color: 0x4444ff })
@@ -88,19 +88,30 @@ export default function Core(scene, player) {
 		materials.getMaterial("standard", "rgb(255, 255, 255)"),
 		300
 	);
-	this.sun = lights.getDirectionalLight(1.5);
+	// this.sun = lights.getDirectionalLight(1.5);
 	this.lightLeft = lights.getSpotLight(1, "rgb(255, 220, 180)");
 	this.lightRight = lights.getSpotLight(1, "rgb(255, 220, 180)");
 
-	this.sun.position.set(30, 50, 50);
-	this.sun.lookAt(0, 0, 0);
-	this.lightLeft.position.x = -8;
+	// this.sun.position.set(30, 50, 50);
+	// this.sun.lookAt(0, 0, 0);
+	this.lightLeft.position.x = -40;
 	this.lightLeft.position.y = 2;
-	this.lightLeft.position.z = -4;
+	this.lightLeft.position.z = 20;
+	this.lightLeft.lookAt(0, 0, 0,);
 
-	this.lightRight.position.x = 5;
-	this.lightRight.position.y = 2;
-	this.lightRight.position.z = -4;
+	this.lightRight.position.x = 40;
+	this.lightRight.position.y = 20;
+	this.lightRight.position.z = -20;
+	this.lightRight.lookAt(0, 0, 0);
+
+	const leftGui = gui.addFolder("Light Left");
+	const rightGui = gui.addFolder("Light right");
+	leftGui.add(this.lightLeft.position, 'x', -40, 40);
+	leftGui.add(this.lightLeft.position, 'y', -20, 20);
+	leftGui.add(this.lightLeft.position, 'z', -20, 20);
+	rightGui.add(this.lightRight.position, 'x', -40, 40);
+	rightGui.add(this.lightRight.position, 'y', -20, 20);
+	rightGui.add(this.lightRight.position, 'z', -20, 20);
 
 	this.fogEnabled = false;
 	if (this.fogEnabled) {
@@ -125,9 +136,14 @@ export default function Core(scene, player) {
 	);
 	this.camera.position.set(0, player.height, -5);
 	this.camera.lookAt(new THREE.Vector3(0, player.height, 0));
+	window.addEventListener('resize', () => {
+		this.renderer.setSize(window.innerWidth, window.innerHeight);
+		this.camera.aspect = window.innerWidth / window.innerHeight;
+		this.camera.updateProjectionMatrix();
+	})
 
 	// manipulate objects
 	this.floor.rotation.x = Math.PI / 2;
 	this.camera.add(player.mesh);
-	scene.add(this.lightLeft, this.lightRight, this.floor, this.sun);
+	scene.add(this.lightLeft, this.lightRight, this.floor);
 }

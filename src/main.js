@@ -13,7 +13,7 @@ function connect(roomCode) {
     connection.socket.onopen = () => {
         const mesh = geometry.getBoxMesh(1, 1.8, 1);
         mesh.position.y += mesh.geometry.parameters.height / 2 + 0.5;
-        connection.send({type: "LOGIN", player: {user: name, position: mesh.position}});
+        connection.send({type: "LOGIN", player: {user: document.getElementById('playerName').value, position: mesh.position}});
         connection.ping(connection.socket);
         connection.socket.onmessage = (e) => {
             const message = JSON.parse(e.data);
@@ -21,6 +21,7 @@ function connect(roomCode) {
                 console.log(message);
                 if (message.own) {
                     connection.players = message.players;
+                    connection.updatePlayers();
                     init(connection)
                 }
             }
@@ -46,8 +47,8 @@ function init(connection) {
         mesh: geometry.getBoxMesh(1, 1.8, 1),
     };
     player.mesh.position.y += player.mesh.geometry.parameters.height / 2 + 0.5;
-
-    const core = new Core(scene, player);
+    player.mesh.castShadow = true;
+    const core = new Core(scene, player, gui);
     const events = new Events(player);
     const meshes = {};
 
@@ -68,8 +69,7 @@ function init(connection) {
         };
         meshes.house1.scale.set(0.1, 0.1, 0.1);
         meshes.house1.position.x += 25;
-
-        scene.add(meshes.house1);
+        // scene.add(meshes.house1);
     }
 
     scene.add(box);
@@ -96,18 +96,23 @@ function init(connection) {
             // 	})
             // 	.start(); // Start the tween immediately.
         } else if (message.type === "LOGIN") {
-            console.log(message);
             if (!message.own) {
                 const playerMesh = geometry.getBoxMesh(1, 1.8, 1);
+                playerMesh.receiveShadow = true;
+                playerMesh.castShadow = true;
                 playerMesh.position.y += playerMesh.geometry.parameters.height / 2 + 0.5;
                 playerMesh.name = `player${message.user}`;
-                connection.players.push({uuid: message.user, mesh: playerMesh});
+                connection.players.push({uuid: message.user, mesh: playerMesh, name: message.player.user});
+                connection.updatePlayers();
                 scene.add(playerMesh);
             }
         } else if (message.type === "LOGOUT") {
-            connection.players.filter((player) => message.user !== player.user);
+            connection.players = connection.players.filter((player) => message.user !== player.uuid);
+            connection.updatePlayers();
             const loggedOutUser = scene.getObjectByName(`player${message.user}`);
             scene.remove(loggedOutUser);
+        }  else if (message.type === "MESSAGE") {
+            connection.insertMessage(message);
         } else if (message.type === "PINGPONG") {
             connection.ping(connection.socket);
         }
