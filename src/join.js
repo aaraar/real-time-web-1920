@@ -9,7 +9,7 @@ window.addEventListener('load', e => {
     }
     toggleActiveState(hostForm);
     toggleActiveState(joinForm);
-    preSelect.innerHTML = `<button id="hostButton">Host</button><button id="joinButton">Join</button>`;
+    preSelect.innerHTML = `<button id="hostButton">Create Room</button><button id="joinButton">Join Room</button>`;
     const hostButton = document.getElementById('hostButton');
     const joinButton = document.getElementById('joinButton');
 

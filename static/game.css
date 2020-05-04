@@ -35,11 +35,17 @@ canvas {
 	bottom: 0;
 	left: 0;
 	height: 20vh;
-	width: 20vw
+	width: 20vw;
+	min-width: 260px;
+	min-height: 130px;
 }
 
 .chat form {
 	margin: 5px 0;
+	display: flex;
+}
+.chat form input {
+	flex: 1 0;
 }
 
 #messages {
@@ -55,7 +61,7 @@ canvas {
 	list-style-type: none;
 	display: flex;
 	max-height: 2ch;
-	align-items: baseline;
+	align-items: center;
 }
 
 #messages li em {
@@ -63,11 +69,18 @@ canvas {
 	width: max-content;
 	margin-right: 1ch;
 	align-items: center;
+	font-style: normal;
+	display: flex;
 }
 
 #messages li img {
-	object-fit: contain;
 	height: 100%;
 	margin-right: 0.5ch;
 	border-radius: 100%;
+	position: relative;
+	object-fit: contain;
+	object-position: center;
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
 }

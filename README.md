@@ -20,18 +20,20 @@
 ## Description 📝
 To experiment with real-time networking I wanted to create a multiplayer 3D game in the browser from scratch.
 I do use the threeJS library to abstract the low-level webGL API.
-The idea eventually is that users can create a room for which they will receive a room-key (Like Kahoot)
-This room key will be saved and up to X amount of players can connect to the room.
-All scores and some metadata will be saved on the database and session to persist the users.
+Users can create a room and receive a room code which they can share with others to let them join.
+Rooms can be rejoined or custom room codes can be created by using the URL at join/CODE
 
 ## To Do 📌
 
 - [x] A basic webGL game where you can walk around
-- [ ] A websocket connection to the server to show other connected players
+- [X] A websocket connection to the server to show other connected players
 - [ ] Users can host their own games
-- [ ] Server hosted 'rooms
+- [X] Server hosted 'rooms
 - [ ] Player models from external API
 - [ ] A functional game-mode
+
+In the end, the networking aspect of a WebGL game without the use of socket.io was too complicated to add more content to.
+The flow including clients - Server - MongoDB database - Redis database cost a lot of time to work out.
 
 ## Installing 🔍
 To install this application follow these steps:
@@ -43,7 +45,42 @@ To install this application follow these steps:
   - Run `yarn watch` & `yarn dev` concurrently for development
   
 ## Data lifecycle
-![Data lifecycle](./docs/dlc.png)
+![Data lifecycle](./docs/dlc2.png)
+- The data in the database is stored without the position unless a player leaves.
+- The current connected players is tracked on the server.
+- The redis server saves session ID's so players can be recognized and will rejoin a room if it still exists
+
+The data available to the server is as follows
+```JSON
+{
+  "qP1BCB_bO": [
+    {
+      "playerId": 1,
+      "name": "aaraar",
+      "position": "(0, 0, 0)"
+    },
+    {
+      "playerId": 2,
+      "name": "razpudding",
+      "position": "(4, 0, 6)"
+    }
+  ],
+  "YZ4CNkD7b": [
+    {
+      "playerId": 3,
+      "name": "bazottie",
+      "position": "(0, 0, 0)"
+    },
+    {
+      "playerId": 4,
+      "name": "kooprey",
+      "position": "(9, 0, 4)"
+    }
+  ]
+}
+```
+- When a player moves the position data is updated.
+- When a player leaves the array is filtered.
 
 
 ### Packages & Services
@@ -57,7 +94,16 @@ This project makes use of the following tech:
 
 ## How It Works 🛠️
 
-Core features of this project.
+1. Player creates a room
+1. Player shares the room code with others
+1. Others join a room by entering a code
+    - The server adds all client ID's to the database
+    - All active players are saved on the Node the server
+    - Sessions/Cookie identification is saved on the redis server
+1. Position data is shared exclusively with socket clients connected to a room
+1. Chat data is shared exclusively with socket clients connected to a room
+1. When a player leaves, his client will be removed from the active players array and his position is saved to the database
+1. When a player rejoins he will continue on his previous credentials
 
 ## Technologies Used 🖲
 

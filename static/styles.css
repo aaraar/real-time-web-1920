@@ -218,8 +218,9 @@ canvas {
 }
 
 #preSelect {
-    min-width: 400px;
+    min-width: 600px;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
     margin: 0 auto;

@@ -8,7 +8,7 @@ block content
         button.back < back
         label(for="name") Display name:
             input#name(type="text" name='name' required)
-        button Host
+        button Create Room
     form#join(action="/join" method="POST")
         button.back < back
         if gameId
@@ -21,4 +21,4 @@ block content
         else
             label(for="joinGameId") Join Code:
                 input#joinGameId(type="text" name='gameId')
-        button Join
+        button Join Room

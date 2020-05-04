@@ -92,7 +92,7 @@ mongodClient.connect().then(err => {
             } else if (message.type === 'MESSAGE') {
                 msgCounter++;
                 rooms[req.params.id].forEach((wsClient) => {
-                    message.source = ws.uuid === wsClient? 'me' : 'other';
+                    message.source = ws.uuid === wsClient.uuid? 'me' : 'other';
                     message.user = ws.name;
                     message.id = msgCounter;
                   wsClient.send(JSON.stringify(message));
@@ -116,6 +116,7 @@ mongodClient.connect().then(err => {
                         JSON.stringify({
                             type: "LOGOUT",
                             user: ws.uuid,
+                            name: ws.name
                         })
                     );
                 }
@@ -217,7 +218,7 @@ mongodClient.connect().then(err => {
             res.render("index", {
                 gameId: req.params.gameId,
                 title: "Realtime Web",
-                pageTitle: "Login",
+                pageTitle: "WebGL Multiplayer",
             });
         }
     });
@@ -228,7 +229,7 @@ mongodClient.connect().then(err => {
         } else {
             res.render("index", {
                 title: "Realtime Web",
-                pageTitle: "Login",
+                pageTitle: "WebGL Multiplayer",
             });
         }
     });

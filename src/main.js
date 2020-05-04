@@ -98,17 +98,18 @@ function init(connection) {
         } else if (message.type === "LOGIN") {
             if (!message.own) {
                 const playerMesh = geometry.getBoxMesh(1, 1.8, 1);
-                playerMesh.receiveShadow = true;
                 playerMesh.castShadow = true;
                 playerMesh.position.y += playerMesh.geometry.parameters.height / 2 + 0.5;
                 playerMesh.name = `player${message.user}`;
                 connection.players.push({uuid: message.user, mesh: playerMesh, name: message.player.user});
                 connection.updatePlayers();
+                connection.insertJoined(message)
                 scene.add(playerMesh);
             }
         } else if (message.type === "LOGOUT") {
             connection.players = connection.players.filter((player) => message.user !== player.uuid);
             connection.updatePlayers();
+            connection.insertLeft(message)
             const loggedOutUser = scene.getObjectByName(`player${message.user}`);
             scene.remove(loggedOutUser);
         }  else if (message.type === "MESSAGE") {
