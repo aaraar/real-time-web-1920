@@ -16,5 +16,20 @@ export default [
         } ),
         commonjs ()
     ]
+    },
+    {
+        input: 'src/join.js',
+    output: {
+        file: 'static/join.js',
+        name: 'bundle',
+    },
+    inlineDynamicImports: true,
+    plugins: [
+        resolve ( {
+            main: true,
+            browser: true
+        } ),
+        commonjs ()
+    ]
     }
 ]

@@ -1,6 +1,24 @@
 extends layouts/main-layout.pug
 block content
-    form#signin(action="/chat" method="POST")
-        label(for="name") name:
-            input#name(type="text" name='name')
-        button Start
+    if gameId
+        form#directLink(style='opacity: 0; position: absolute;')
+            input(type="hidden" value=gameid)
+    div#preSelect(style='left: 50%;')
+    form#host(action="/host" method="POST")
+        button.back < back
+        label(for="name") Display name:
+            input#name(type="text" name='name' required)
+        button Host
+    form#join(action="/join" method="POST")
+        button.back < back
+        if gameId
+            p You have to enter a name before joining
+        label(for="joinName") Display name:
+            input#joinName(type="text" name='name' required)
+        if gameId
+            label(for="joinGameId") Join Code:
+                input#joinGameId(type="text" name='name' value=gameId)
+        else
+            label(for="joinGameId") Join Code:
+                input#joinGameId(type="text" name='name')
+        button Join

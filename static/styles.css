@@ -1,11 +1,11 @@
 :root {
-    --dark: #000;
-    --primary: #2274A5;
-    --secondary: #F75C03;
-    --ternary: #F1C40F;
+    --dark: #191516;
+    --primary: #471323;
+    --secondary: #CEB992;
+    --ternary: #5B2E48;
     --error: #D90368;
-    --succes: #00CC66;
-    --light: #fff;
+    --succes: #73937E;
+    --light: #C9DAEA;
 }
 
 body, .app {
@@ -24,6 +24,8 @@ body, .app {
 }
 
 html {
+    width: 100vw;
+    overflow-x: hidden;
     height: 100%;
     background-color: var(--primary);
 }
@@ -35,7 +37,7 @@ footer {
     height: 3em;
     width: 100%;
     flex-shrink: 0;
-    padding: 20px;
+    padding: 20px 40px 40px;
     background-color: var(--primary);
     color: var(--secondary);
 }
@@ -72,57 +74,53 @@ main::-webkit-scrollbar {
 }
 
 form {
+    font-size: 1.5em;
     padding: 15px 10px;
     background-color: var(--primary);
-    position: fixed;
-    bottom: 0;
-    left: 0;
+    margin: 0 auto;
     width: 100%;
-    height: 5em;
-}
-form#signin {
-    height: initial;
-    padding: 10px;
-    background: rgba(0,0,0,0.5);
     border-radius: 10px;
+    max-width: 400px;
     display: flex;
     flex-direction: column;
-    color: var(--light);
-    width: 50%;
-    position: relative;
-    margin: 5em auto;
+    color: var(--secondary);
 }
-
-form input {
-    border: 0;
-    padding: 10px;
-    width: 90%;
-    margin-right: .5%;
-    border-radius: 5px;
-}
-
-form button {
-    width: 9%;
-    background-color: var(--succes);
+form p {
+    font-size: 0.6em;
     color: var(--error);
+    margin: 1em 0;
+}
+
+form label {
+    display: flex;
+    margin-bottom: 0.5em;
+    justify-content: space-between;
+}
+
+button {
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    background-color: var(--primary);
+    color: var(--secondary);
     border: none;
     padding: 10px;
     border-radius: 5px;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 }
 
-form#signin input {
-    width: 83%;
+form input {
+    border-radius: 5px;
     margin-right: 0;
+    padding: 0.3em 0;
 }
 
-form#signin label {
+form label {
     display: flex;
     width: 100%;
     justify-content: space-between;
     align-items: center;
 }
 
-form#signin button {
+form button {
     width: 100%;
     margin-top: 1em;
     border: none;
@@ -213,4 +211,48 @@ form#signin button {
 canvas {
     background-color: white;
     border-radius: 10px;
+}
+
+#join, #host {
+    transition: opacity 0.4s ease-out, left 0.6s ease-out;
+}
+
+#preSelect {
+    min-width: 400px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+    padding: 2em 1em;
+    background: var(--primary);
+    border: none;
+    border-radius: 10px;
+    box-shadow: none;
+    transition: 0.4s ease-out;
+}
+
+#preSelect button {
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 3em;
+}
+
+button:hover {
+    cursor: pointer;
+    transform: translateY(-3px);
+    box-shadow: 0 7px 15px rgba(0,0,0,0.5);
+}
+
+.back {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    margin-bottom: 0.5em;
+    width: 10ch;
+    text-align: center;
+}
+
+#preSelect, #host, #join {
+    position: absolute;
+    top: 30vh;
+    transform: translateX(-50%);
 }

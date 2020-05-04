@@ -1,11 +1,11 @@
-export default function Connection() {
+export default function Connection(code) {
 	this.players = [];
 	this.host = window.location.hostname;
 	this.port = window.location.port;
 	this.protocol = window.location.protocol;
 	this.wsProtocol = this.protocol === "https:" ? "wss" : "ws";
 	this.socket = new WebSocket(
-		`${this.wsProtocol}://${this.host}:${this.port}/join`
+		`${this.wsProtocol}://${this.host}:${this.port}/join/${code}`
 	);
 
 	// document.querySelector ( 'form' ).addEventListener ( 'submit', ( e ) => {
@@ -101,7 +101,9 @@ export default function Connection() {
 		this.socket.send(
 			JSON.stringify({
 				type: "MOVEMENT",
-				player: {position: player.position, rotation: player.rotation},
+				player: {
+					position: player.position
+				},
 			})
 		);
 	};

@@ -4,8 +4,8 @@
 
 ## Table of contents
 
-- [To do](#to-do-)
 - [Description](#description-)
+- [To do](#to-do-)
 - [Installing](#installing-)
 - [Data Lifecycle Diagram](#data-lifecycle)
 - [Packages & Services](#packages--services)
@@ -16,6 +16,14 @@
 - [Goals](#goals)
 - [License](#license-)
 
+
+## Description 📝
+To experiment with real-time networking I wanted to create a multiplayer 3D game in the browser from scratch.
+I do use the threeJS library to abstract the low-level webGL API.
+The idea eventually is that users can create a room for which they will receive a room-key (Like Kahoot)
+This room key will be saved and up to X amount of players can connect to the room.
+All scores and some metadata will be saved on the database and session to persist the users.
+
 ## To Do 📌
 
 - [x] A basic webGL game where you can walk around
@@ -24,13 +32,6 @@
 - [ ] Server hosted 'rooms
 - [ ] Player models from external API
 - [ ] A functional game-mode
-
-## Description 📝
-To experiment with real-time networking I wanted to create a multiplayer 3D game in the browser from scratch.
-I do use the threeJS library to abstract the low-level webGL API.
-The idea eventually is that users can create a room for which they will receive a room-key (Like Kahoot)
-This room key will be saved and up to X amount of players can connect to the room.
-All scores and some metadata will be saved on the database and session to persist the users.
 
 ## Installing 🔍
 To install this application follow these steps:
