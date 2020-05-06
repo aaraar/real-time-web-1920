@@ -50,22 +50,25 @@ mongodClient.connect().then(err => {
 
     app.ws("/join/:id", (ws, req) => {
         ws.on("message", function (msg) {
+            if (!rooms[req.params.id]){
+                rooms[req.params.id] = [];
+                console.log(rooms[req.params.id]);
+            }
             const message = JSON.parse(msg);
+
             if (message.type === "MOVEMENT") {
                 ws.position = message.player.position;
-                rooms[req.params.roomId].forEach((wsClient) => {
+                rooms[req.params.id].forEach((wsClient) => {
                     if (wsClient.uuid !== ws.uuid) {
                         message.user = ws.uuid;
                         wsClient.send(JSON.stringify(message));
                     }
                 });
             } else if (message.type === "LOGIN") {
-                if (!rooms[req.params.id]){
-                    rooms[req.params.id] = [];
-                }
                 ws.uuid = userCounter;
                 ws.name = message.player.user;
                 ws.roomId = req.params.id
+                console.log(req.params.id);
                 req.session.gameId = req.params.id
                 message.user = ws.uuid;
                 ws.position = message.player.position;

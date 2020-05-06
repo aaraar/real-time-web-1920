@@ -6,7 +6,9 @@ import Core from "./game_modules/core";
 import Events from "./game_modules/events";
 import Connection from "./Connection";
 
-window.onload = connect(document.getElementById('gameId').value);
+window.addEventListener('load', (e) => {
+    connect(document.getElementById('gameId').innerText);
+})
 
 function connect(roomCode) {
     const connection = new Connection(roomCode);
